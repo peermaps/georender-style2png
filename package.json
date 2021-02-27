@@ -1,0 +1,14 @@
+{
+  "name": "georender-style2png",
+  "version": "1.0.0",
+  "description": "create a texture png from a georender stylesheet",
+  "license": "MIT",
+  "dependencies": {
+    "fast-png": "^5.0.3",
+    "minimist": "^1.2.5",
+    "georender-pack": "^2.1.1"
+  },
+  "bin": {
+    "georender-style2png": "bin/cmd.js"
+  }
+}
