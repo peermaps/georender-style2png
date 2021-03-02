@@ -36,6 +36,11 @@
     "line-fill-color": "#b56083",
     "area-fill-color": "#b56083"
   },
+  "amenity.courthouse": {
+    "point-fill-color": "#b5adbc",
+    "line-fill-color": "#b5adbc",
+    "area-fill-color": "#b5adbc"
+  },
   "amenity.embassy": {
     "point-fill-color": "#d9bf9e",
     "line-fill-color": "#d9bf9e",
@@ -55,6 +60,11 @@
     "point-fill-color": "#dfbeb0",
     "line-fill-color": "#dfbeb0",
     "area-fill-color": "#dfbeb0"
+  },
+  "amenity.marketplace": {
+    "point-fill-color": "#e6d9f2",
+    "line-fill-color": "#e6d9f2",
+    "area-fill-color": "#e6d9f2"
   },
   "amenity.parking": {
     "area-fill-color": "#a4afbb"
@@ -155,14 +165,6 @@
     "line-fill-color": "#331f5b",
     "line-fill-style": "solid"
   },
-  "highway.trunk": {
-    "line-fill-width[zoom<10]": 3,
-    "line-fill-width[zoom>=10&&zoom<=14]": 6,
-    "line-fill-width[16>zoom>13]": 7,
-    "line-fill-width[zoom>=16]": 15,
-    "line-fill-color": "#655447",
-    "line-fill-style": "solid"
-  },
   "highway.primary": {
     "line-fill-width[zoom<=11]": 4,
     "line-fill-width[13>=zoom>11]": 7,
@@ -174,6 +176,22 @@
   "highway.residential": {
     "line-fill-color": "#c4b7ab",
     "line-stroke-color": "#a48f7d"
+  },
+  "highway.secondary": {
+    "line-fill-width[zoom<=11]": 3,
+    "line-fill-width[13>=zoom>11]": 6,
+    "line-fill-width[17>zoom>13]": 8,
+    "line-fill-width[zoom>=17]": 10,
+    "line-fill-color": "#ffffb1",
+    "line-fill-style": "solid"
+  },
+  "highway.trunk": {
+    "line-fill-width[zoom<10]": 3,
+    "line-fill-width[zoom>=10&&zoom<=14]": 6,
+    "line-fill-width[16>zoom>13]": 7,
+    "line-fill-width[zoom>=16]": 15,
+    "line-fill-color": "#655447",
+    "line-fill-style": "solid"
   },
   "historic.*": {
     "point-size": 5,
@@ -203,11 +221,21 @@
     "point-stroke-color": "",
     "area-fill-color": "#514147"
   },
+  "landuse.village_green": {
+    "point-size": 5,
+    "point-fill-color": "#a1f1a1",
+    "area-fill-color": "#a1f1a1"
+  },
   "leisure.*": {
     "point-size": 5,
     "point-fill-color": "#ddfecd",
     "point-stroke-color": "",
     "area-fill-color": "#ddfecd"
+  },
+  "leisure.park": {
+    "point-size": 5,
+    "point-fill-color": "#a1f1a1",
+    "area-fill-color": "#a1f1a1"
   },
   "leisure.pitch": {
     "area-fill-color": "#7fc2ac",
