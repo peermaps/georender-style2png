@@ -185,6 +185,20 @@
     "line-fill-color": "#ffffb1",
     "line-fill-style": "solid"
   },
+  "highway.service": {
+    "line-fill-width": 1,
+    "line-fill-color": "#fffaaa",
+    "line-fill-style": "solid"
+  },
+  "highway.track": {
+    "point-fill-color": "#daa520",
+    "line-fill-color": "#daa520",
+    "line-fill-style": "dash",
+    "line-fill-dash-length": "short",
+    "line-fill-dash-gap": 50,
+    "area-fill-color": "#daa520",
+    "area-zindex": 3.0
+  },
   "highway.trunk": {
     "line-fill-width[zoom<10]": 3,
     "line-fill-width[zoom>=10&&zoom<=14]": 6,
@@ -205,6 +219,18 @@
     "line-fill-color": "#8cbe6f",
     "area-fill-color": "#8cbe6f"
   },
+  "landuse.farmland": {
+    "point-fill-color": "#efd594",
+    "line-fill-color": "#efd594",
+    "area-fill-color": "#efd594",
+    "area-zindex": 3.0
+  },
+  "landuse.farmyard": {
+    "point-fill-color": "#daa520",
+    "line-fill-color": "#daa520",
+    "area-fill-color": "#daa520",
+    "area-zindex": 3.0
+  },
   "landuse.industrial": {
     "point-size": 5,
     "point-fill-color": "#cbcba8",
@@ -224,13 +250,15 @@
   "landuse.village_green": {
     "point-size": 5,
     "point-fill-color": "#a1f1a1",
-    "area-fill-color": "#a1f1a1"
+    "area-fill-color": "#a1f1a1",
+    "area-zindex": 3.0
   },
   "leisure.*": {
     "point-size": 5,
     "point-fill-color": "#ddfecd",
     "point-stroke-color": "",
-    "area-fill-color": "#ddfecd"
+    "area-fill-color": "#ddfecd",
+    "area-zindex": 3.0
   },
   "leisure.park": {
     "point-size": 5,
@@ -240,6 +268,18 @@
   "leisure.pitch": {
     "area-fill-color": "#7fc2ac",
     "area-zindex": 7.0
+  },
+  "leisure.sports_centre": {
+    "point-size": 5,
+    "point-fill-color": "#e6e6fa",
+    "line-fill-color": "#e6e6fa",
+    "area-fill-color": "#e6e6fa"
+  },
+  "leisure.swimming_pool": {
+    "point-size": 3,
+    "point-fill-color": "#ade6e6",
+    "area-fill-color": "#ade6e6",
+    "area-zindex": 4.0
   },
   "man_made.breakwater": {
     "line-fill-width": 4,
@@ -342,7 +382,8 @@
     "point-size": 2,
     "point-fill-color": "#a8a8cb",
     "point-stroke-color": "",
-    "area-fill-color": "#a8a8cb"
+    "area-fill-color": "#a8a8cb",
+    "area-zindex": 3.0
   },
   "tourism.hotel": {
     "area-fill-color": "#bdadb3"
