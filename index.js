@@ -1,3 +1,4 @@
+var expand = require('brace-expansion')
 var evalExpr = require('./lib/expr.js')
 var settings = require('./settings.js')()
 var zoomStart = settings.zoomStart
@@ -6,7 +7,8 @@ var zoomEnd = settings.zoomEnd //inclusive
 module.exports = function (opts) {
   var defaults = opts.defaults
   var stylesheet = opts.stylesheet
-  preProcess(stylesheet)
+  parseKeys(stylesheet)
+  parseZooms(stylesheet)
   var fkeys = Object.keys(opts.features)
   var lw
   var heights = settings.heights
@@ -132,7 +134,7 @@ function getProp (rules, property, zoom) {
   }
 }
 
-function preProcess (stylesheet) {
+function parseZooms (stylesheet) {
   var vars = { zoom: 0 }
   var keys = Object.keys(stylesheet)
   for (var i=0; i<keys.length; i++) {
@@ -146,6 +148,26 @@ function preProcess (stylesheet) {
         var zkey = m[1] + "[zoom=" + zoom + "]"
         stylesheet[keys[i]][zkey] = stylesheet[keys[i]][pkeys[j]]
       }
+    }
+  }
+  return stylesheet
+}
+
+function parseKeys (stylesheet) {
+  var keys = Object.keys(stylesheet)
+  for (var i=0; i<keys.length; i++) {
+    var re = /((?:{[^}]+}|[^,])+)\s*(?:,|$)\s*/g
+    var m
+    var nmatches = 0
+    while (m = re.exec(keys[i])) {
+      var e = expand(m[1])
+      for (var j=0; j<e.length; j++) {
+        nmatches++
+        stylesheet[e[j]] = stylesheet[keys[i]]
+      }
+    }
+    if (nmatches > 1) {
+      delete stylesheet[keys[i]]
     }
   }
   return stylesheet

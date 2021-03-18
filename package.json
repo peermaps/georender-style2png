@@ -4,9 +4,10 @@
   "description": "create a texture png from a georender stylesheet",
   "license": "MIT",
   "dependencies": {
+    "brace-expansion": "^2.0.1",
     "fast-png": "^5.0.3",
-    "minimist": "^1.2.5",
-    "georender-pack": "^2.1.1"
+    "georender-pack": "^2.1.1",
+    "minimist": "^1.2.5"
   },
   "bin": {
     "georender-style2png": "bin/cmd.js"
