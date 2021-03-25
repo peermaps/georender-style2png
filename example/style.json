@@ -4,10 +4,14 @@
     "point-fill-color": "#2f5a92",
     "point-stroke-color": ""
   },
-  "aerialway.{chair_lift,drag_lift}": {
+  "aerialway.{chair_lift,drag_lift,j-bar,magic_carpet,platter,rope_tow,t-bar,zip_line}": {
     "line-fill-color": "#000000"
   },
-  "aeroway.aerodrome": {
+  "aerialway.{cable_car,gondola,goods,mixed_lift,other}": {
+    "line-fill-color": "#000000",
+    "line-fill-style": "dash"
+  },
+  "aeroway.{aerodrome,heliport}": {
     "area-fill-color": "#d3d3d3"
   },
   "aeroway.apron": {
@@ -24,7 +28,7 @@
     "point-stroke-color": "",
     "area-fill-color": "#21abcd"
   },
-  "amenity.bus_station": {
+  "amenity.bus_station, aerialway.station": {
     "point-size": 5,
     "point-fill-color": "#adc9cb",
     "line-fill-color": "#adc9cb",
@@ -76,7 +80,7 @@
     "line-fill-color": "#320032",
     "area-fill-color": "#320032"
   },
-  "amenity.hospital": {
+  "{amenity,building}.hospital": {
     "point-size": 5,
     "point.fill-color": "#ffafaf",
     "line-fill-color": "#ffafaf",
@@ -135,7 +139,7 @@
     "area-fill-color": "#a4afbb",
     "area-zindex": 4.0
   },
-  "amenity.university, building.university": {
+  "{amenity,building}.university": {
     "point-fill-color": "#b59260",
     "line-fill-color": "#b59260",
     "area-fill-color": "#b59260"
@@ -157,7 +161,9 @@
   },
   "boundary.administrative": {
     "line-fill-width": 0,
-    "line-stroke-width": 0
+    "line-stroke-width": 0,
+    "line-zindex": 1.0,
+    "area-zindex": 1.0
   },
   "building.*": {
     "point-size": 5,
@@ -353,7 +359,7 @@
     "area-fill-color": "#b5b5f0",
     "area-zindex": 5
   },
-  "leisure.sports_centre": {
+  "leisure.{fitness_centre, sports_centre}": {
     "point-size": 5,
     "point-fill-color": "#d6d6f7",
     "line-fill-color": "#d6d6f7",
@@ -453,6 +459,9 @@
     "area-fill-color": "#d3d3d3",
     "point-zindex": 5.0,
     "area-zindex": 5.0
+  },
+  "{office,building}.government": {
+    "area-fill-color": "#d3d3d3"
   },
   "place.neighbourhood": {
     "area-zindex": 1.0

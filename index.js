@@ -26,7 +26,7 @@ module.exports = function (opts) {
       data[offset++] = a[0] //r
       data[offset++] = a[1] //g
       data[offset++] = a[2] //b
-      data[offset++] = 0 //a
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-opacity", y) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-size", y)
@@ -41,14 +41,14 @@ module.exports = function (opts) {
       data[offset++] = b[0] //r
       data[offset++] = b[1] //g
       data[offset++] = b[2] //b
-      data[offset++] = 0 //a
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-fill-opacity", y) //a
       }
     for (var x = 0; x < fkeys.length; x++) {
       var c = parseHex(getStyle(defaults, stylesheet, fkeys[x], "line-stroke-color", y))
       data[offset++] = c[0] //r
       data[offset++] = c[1] //g
       data[offset++] = c[2] //b
-      data[offset++] = 0 //a
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-stroke-opacity", y) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = parseLineStyle(defaults, stylesheet, fkeys[x], 'fill')
@@ -75,7 +75,7 @@ module.exports = function (opts) {
       data[offset++] = d[0] //r
       data[offset++] = d[1] //g
       data[offset++] = d[2] //b
-      data[offset++] = 0 //a
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-opacity", y) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-zindex", y)
