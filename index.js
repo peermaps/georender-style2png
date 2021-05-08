@@ -9,7 +9,7 @@ module.exports = function (opts) {
   var stylesheet = opts.stylesheet
   parseKeys(stylesheet)
   parseZooms(stylesheet)
-  var fkeys = Object.keys(opts.features)
+  var fkeys = opts.features
   var lw
   var heights = settings.heights
   var totalHeight = heights.point + heights.line + heights.area
@@ -32,7 +32,7 @@ module.exports = function (opts) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-size", y)
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-zindex", y)
       data[offset++] = 0
-      data[offset++] = 0
+      data[offset++] = 255
     }
   }
   for (var y = zoomStart; y <= zoomEnd; y++) { //line

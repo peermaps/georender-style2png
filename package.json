@@ -6,7 +6,7 @@
   "dependencies": {
     "brace-expansion": "^2.0.1",
     "fast-png": "^5.0.3",
-    "georender-pack": "^2.1.1",
+    "georender-pack": "^3.0.0",
     "minimist": "^1.2.5"
   },
   "bin": {
