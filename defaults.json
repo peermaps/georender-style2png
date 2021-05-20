@@ -31,7 +31,6 @@
   "line-zindex": 5.0,
   "area-zindex": 2.0,
   "point-opacity": 100,
-  "line-fill-opacity": 100,
-  "line-stroke-opacity": 100,
+  "line-opacity": 100,
   "area-opacity": 100
 }
