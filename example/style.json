@@ -25,8 +25,7 @@
     "point-size": 5,
     "point-fill-color": "#21abcd",
     "point-stroke-color": "",
-    "area-fill-color": "#21abcd",
-    "point-opacity": 51
+    "area-fill-color": "#21abcd"
   },
   "amenity.bus_station, aerialway.station": {
     "point-size": 5,
@@ -130,7 +129,6 @@
     "point-fill-color": "#e4d8c6",
     "line-fill-color": "#e4d8c6",
     "area-fill-color": "#e4d8c6",
-    "point-opacity": 55,
     "area-zindex": 4.0
   },
   "amenity.shelter": {
@@ -431,12 +429,10 @@
     "area-fill-color": "#c0e3b4"
   },
   "natural.tree": {
-    "point-size[zoom<16]": 35,
-    "point-size[zoom>=16]": 35,
+    "point-size": 5,
     "point-fill-color": "#5b863f",
     "line-fill-color": "#5b863f",
     "area-fill-color": "#5b863f",
-    "point-opacity": 52,
     "point-zindex": 5
   },
   "natural.water": {

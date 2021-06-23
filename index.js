@@ -66,7 +66,7 @@ module.exports = function (opts) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-fill-width", y)
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-stroke-width", y)
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-zindex", y)
-      data[offset++] = 0
+      data[offset++] = 255
       }
   }
   for (var y = zoomStart; y <= zoomEnd; y++) { //area
@@ -81,7 +81,7 @@ module.exports = function (opts) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-zindex", y)
       data[offset++] = 0
       data[offset++] = 0
-      data[offset++] = 0
+      data[offset++] = 255
     }
   }
   return { 
