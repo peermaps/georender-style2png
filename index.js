@@ -51,16 +51,13 @@ module.exports = function (opts) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-opacity", y) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = parseLineStyle(defaults, stylesheet, fkeys[x], 'fill')
-      if (getStyle(defaults, stylesheet, fkeys[x], "line-fill-style", y) === "solid") {
-        data[offset++] = 0
-      }
-      else data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-fill-dash-gap", y)
-      data[offset++] = parseLineStyle(defaults, stylesheet, fkeys[x], 'stroke')
-      if (getStyle(defaults, stylesheet, fkeys[x], "line-stroke-style", y) === "solid") {
-        data[offset++] = 0
-      }
-      else data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-stroke-dash-gap", y)
+      var lineStyleFill = parseLineStyle(defaults, stylesheet, fkeys[x], 'fill')
+      var lineStyleStroke = parseLineStyle(defaults, stylesheet, fkeys[x], 'stroke')
+
+      data[offset++] = lineStyleFill.dashLength
+      data[offset++] = lineStyleFill.dashGap
+      data[offset++] = lineStyleStroke.dashLength
+      data[offset++] = lineStyleStroke.dashGap
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-fill-width", y)
@@ -97,17 +94,23 @@ function parseHex (hex) {
 
 function parseLineStyle (defaults, stylesheet, type, property) {
   var style = getStyle(defaults, stylesheet, type, `line-${property}-style`)
-  var dashLength = 10
   var x = getStyle(defaults, stylesheet, type, `line-${property}-dash-length`)
+  var y = getStyle(defaults, stylesheet, type, `line-${property}-dash-gap`)
+  var lineStyle = {}
 
-  if (x === "short") dashLength = 10
-  if (x === "medium") dashLength = 15
-  if (x === "long") dashLength = 20
-
-  if (style === "solid") return 10 
-  if (style === "dot") return 6
-  if (style === "dash") return dashLength
-  else return 0
+  if (style === "solid") {
+    lineStyle['dashLength'] = 1
+    lineStyle['dashGap'] = 0
+  }
+  if (style === "dot") {
+    lineStyle['dashLength'] = 3
+    lineStyle['dashGap'] = y
+  }
+  if (style === "dash") {
+    lineStyle['dashLength'] = x
+    lineStyle['dashGap'] = y
+  }
+  return lineStyle
 }
 
 function getStyle (defaults, stylesheet, type, property, zoom) {
