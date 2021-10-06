@@ -12,11 +12,9 @@ module.exports = function (opts) {
   var fkeys = opts.features
   var lw
   var heights = settings.heights
-  var totalHeight = heights.point + heights.line + heights.area
-  var arrLength = 4*fkeys.length*totalHeight
-  var r0 = heights.point/totalHeight
-  var r1 = (heights.point + heights.line)/totalHeight
   var ranges = settings.ranges
+  var totalHeight = settings.totalHeight
+  var arrLength = 4*fkeys.length*totalHeight
 
   var data = new Uint8Array(arrLength)
   var offset = 0
@@ -81,6 +79,21 @@ module.exports = function (opts) {
       data[offset++] = 255
     }
   }
+  for (var y = zoomStart; y <= zoomEnd; y++) { //areaborder
+    for (var x = 0; x < fkeys.length; x++) {
+      var d = parseHex(getStyle(defaults, stylesheet, fkeys[x], "areaborder-color", y))
+      data[offset++] = d[0] //r
+      data[offset++] = d[1] //g
+      data[offset++] = d[2] //b
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "areaborder-opacity", y) //a
+    }
+    for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0
+      data[offset++] = 0
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "areaborder-width", y)
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "areaborder-zindex", y)
+    }
+  }
   return { 
     data,
     width: fkeys.length,
@@ -111,6 +124,27 @@ function parseLineStyle (defaults, stylesheet, type, property) {
     lineStyle['dashGap'] = y
   }
   return lineStyle
+}
+
+function parseAreaborderStyle (defaults, stylesheet, type, zoom) {
+  var style = getStyle(defaults, stylesheet, type, `areaborder-style`, zoom)
+  var x = getStyle(defaults, stylesheet, type, `areaborder-dash-length`, zoom)
+  var y = getStyle(defaults, stylesheet, type, `areaborder-dash-gap`, zoom)
+  var areaborderStyle = {}
+
+  if (style === "solid") {
+    areaborderStyle['dashLength'] = 1
+    areaborderStyle['dashGap'] = 0
+  }
+  if (style === "dot") {
+    areaborderStyle['dashLength'] = 3
+    areaborderStyle['dashGap'] = y
+  }
+  if (style === "dash") {
+    areaborderStyle['dashLength'] = x
+    areaborderStyle['dashGap'] = y
+  }
+  return areaborderStyle
 }
 
 function getStyle (defaults, stylesheet, type, property, zoom) {

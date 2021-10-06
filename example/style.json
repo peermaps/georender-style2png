@@ -1,7 +1,6 @@
 {
   "*": {
-    "point-size": 0,
-    "point-fill-color": "#2f5a92"
+    "point-size": 0 
   },
   "aerialway.{chair_lift,drag_lift,j-bar,magic_carpet,platter,rope_tow,t-bar,zip_line}": {
     "line-fill-color": "#000000"
@@ -34,7 +33,7 @@
     "area-fill-color": "#adc9cb"
   },
   "amenity.cafe": {
-    "point-size": 5,
+    "point-size": 7,
     "point-fill-color": "#9a85c6",
     "point-stroke-color": "",
     "line-fill-color": "#9a85c6",
@@ -191,8 +190,7 @@
     "line-fill-style": "dot",
     "line-stroke-color": "#aaaaaa",
     "line-stroke-width": 1,
-    "line-stroke-style": "solid",
-    "line-stroke-dash-color": ""
+    "line-stroke-style": "solid"
   },
   "highway.motorway": {
     "line-fill-width[zoom<10]": 3,

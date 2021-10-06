@@ -5,21 +5,25 @@ module.exports = function () {
   var heights = {
     point: 2*zoomCount,
     line: 4*zoomCount,
-    area: 2*zoomCount
+    area: 2*zoomCount,
+    areaborder: 2*zoomCount
   }
-  var totalHeight = heights.point + heights.line + heights.area
+  var totalHeight = heights.point + heights.line + heights.area + heights.areaborder
   var r0 = heights.point/totalHeight
   var r1 = (heights.point + heights.line)/totalHeight
+  var r2 = (heights.point + heights.line + heights.area)/totalHeight
   var ranges = [
     [0, r0],
     [r0, r1],
-    [r1, 1]
+    [r1, r2],
+    [r2, 1]
   ]
 
   return { 
     zoomStart,
     zoomEnd,
     heights,
+    totalHeight,
     ranges
   }
 }
