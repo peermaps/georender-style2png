@@ -126,25 +126,25 @@ function parseLineStyle (defaults, stylesheet, type, property) {
   return lineStyle
 }
 
-function parseAreaborderStyle (defaults, stylesheet, type, zoom) {
+function parseAreaBorderStyle (defaults, stylesheet, type, zoom) {
   var style = getStyle(defaults, stylesheet, type, `areaborder-style`, zoom)
   var x = getStyle(defaults, stylesheet, type, `areaborder-dash-length`, zoom)
   var y = getStyle(defaults, stylesheet, type, `areaborder-dash-gap`, zoom)
-  var areaborderStyle = {}
+  var areaBorderStyle = {}
 
   if (style === "solid") {
-    areaborderStyle['dashLength'] = 1
-    areaborderStyle['dashGap'] = 0
+    areaBorderStyle['dashLength'] = 1
+    areaBorderStyle['dashGap'] = 0
   }
   if (style === "dot") {
-    areaborderStyle['dashLength'] = 3
-    areaborderStyle['dashGap'] = y
+    areaBorderStyle['dashLength'] = 3
+    areaBorderStyle['dashGap'] = y || 2
   }
   if (style === "dash") {
-    areaborderStyle['dashLength'] = x
-    areaborderStyle['dashGap'] = y
+    areaBorderStyle['dashLength'] = x || 5
+    areaBorderStyle['dashGap'] = y || 5
   }
-  return areaborderStyle
+  return areaBorderStyle
 }
 
 function getStyle (defaults, stylesheet, type, property, zoom) {
