@@ -23,11 +23,11 @@
   "line-overlay": "",
   "area-fill-color": "#ffd8d4",
   "area-fill-pattern": "",
-  "areaborder-color": "#1f9393",
-  "areaborder-width": 3,
-  "areaborder-style": "solid",
-  "areaborder-dash-length": 10,
-  "areaborder-dash-gap": 5,
+  "area-border-color": "#1f9393",
+  "area-border-width": 3,
+  "area-border-style": "solid",
+  "area-border-dash-length": 10,
+  "area-border-dash-gap": 5,
   "line-fill-dash-length": 12,
   "line-fill-dash-gap": 6,
   "label-fill-color": "",
@@ -37,9 +37,9 @@
   "point-zindex": 7.0,
   "line-zindex": 5.0,
   "area-zindex": 2.0,
-  "areaborder-zindex": 4.0,
+  "area-border-zindex": 4.0,
   "point-opacity": 100,
   "line-opacity": 100,
   "area-opacity": 100,
-  "areaborder-opacity": 100
+  "area-border-opacity": 100
 }
