@@ -1,6 +1,6 @@
 {
   "name": "georender-style2png",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "create a texture png from a georender stylesheet",
   "license": "MIT",
   "dependencies": {
