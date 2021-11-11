@@ -81,17 +81,17 @@ module.exports = function (opts) {
   }
   for (var y = zoomStart; y <= zoomEnd; y++) { //areaborder
     for (var x = 0; x < fkeys.length; x++) {
-      var d = parseHex(getStyle(defaults, stylesheet, fkeys[x], "areaborder-color", y))
+      var d = parseHex(getStyle(defaults, stylesheet, fkeys[x], "area-border-color", y))
       data[offset++] = d[0] //r
       data[offset++] = d[1] //g
       data[offset++] = d[2] //b
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "areaborder-opacity", y) //a
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-opacity", y) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = 0
       data[offset++] = 0
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "areaborder-width", y)
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "areaborder-zindex", y)
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-width", y)
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-zindex", y)
     }
   }
   return { 
@@ -127,9 +127,9 @@ function parseLineStyle (defaults, stylesheet, type, property) {
 }
 
 function parseAreaBorderStyle (defaults, stylesheet, type, zoom) {
-  var style = getStyle(defaults, stylesheet, type, `areaborder-style`, zoom)
-  var x = getStyle(defaults, stylesheet, type, `areaborder-dash-length`, zoom)
-  var y = getStyle(defaults, stylesheet, type, `areaborder-dash-gap`, zoom)
+  var style = getStyle(defaults, stylesheet, type, `area-border-style`, zoom)
+  var x = getStyle(defaults, stylesheet, type, `area-border-dash-length`, zoom)
+  var y = getStyle(defaults, stylesheet, type, `area-border-dash-gap`, zoom)
   var areaBorderStyle = {}
 
   if (style === "solid") {
