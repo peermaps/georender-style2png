@@ -88,8 +88,9 @@ module.exports = function (opts) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-opacity", y) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0
-      data[offset++] = 0
+      var areaBorderStyle = parseAreaBorderStyle (defaults, stylesheet, fkeys[x], y)
+      data[offset++] = areaBorderStyle.dashLength
+      data[offset++] = areaBorderStyle.dashGap
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-width", y)
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-zindex", y)
     }
