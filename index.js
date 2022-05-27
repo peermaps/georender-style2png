@@ -32,6 +32,24 @@ module.exports = function (opts) {
       data[offset++] = 0
       data[offset++] = 255
     }
+    for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //point-label-fill-color R
+      data[offset++] = 0 //point-label-fill-color G
+      data[offset++] = 0 //point-label-fill-color B 
+      data[offset++] = 255 //point-label-fill-opacity
+    }
+    for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //point-label-font
+      data[offset++] = 0 //point-label-font-size
+      data[offset++] = 0 //point-label-priority
+      data[offset++] = 255 //point-label-constraints
+    }
+    for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //point-label-stroke-width
+      data[offset++] = 0 //reserved
+      data[offset++] = 0 //reserved
+      data[offset++] = 255 //reserved
+    }
   }
   for (var y = zoomStart; y <= zoomEnd; y++) { //line
     for (var x = 0; x < fkeys.length; x++) {
@@ -62,7 +80,25 @@ module.exports = function (opts) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-stroke-width", y)
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-zindex", y)
       data[offset++] = 255
-      }
+    }
+    for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //line-label-fill-color R
+      data[offset++] = 0 //line-label-fill-color G
+      data[offset++] = 0 //line-label-fill-color B 
+      data[offset++] = 255 //line-label-fill-opacity
+    }
+    for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //line-label-font
+      data[offset++] = 0 //line-label-font-size
+      data[offset++] = 0 //line-label-priority
+      data[offset++] = 255 //line-label-constraints
+    }
+    for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //line-label-stroke-width
+      data[offset++] = 0 //reserved
+      data[offset++] = 0 //reserved
+      data[offset++] = 255 //reserved
+    }
   }
   for (var y = zoomStart; y <= zoomEnd; y++) { //area
     for (var x = 0; x < fkeys.length; x++) {
@@ -74,9 +110,27 @@ module.exports = function (opts) {
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-zindex", y)
-      data[offset++] = 0
-      data[offset++] = 0
-      data[offset++] = 255
+      data[offset++] = 0 //reserved
+      data[offset++] = 0 //reserved
+      data[offset++] = 255 //reserved
+    }
+    for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //area-label-fill-color R
+      data[offset++] = 0 //area-label-fill-color G
+      data[offset++] = 0 //area-label-fill-color B 
+      data[offset++] = 255 //area-label-fill-opacity
+    }
+    for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //area-label-font
+      data[offset++] = 0 //area-label-font-size
+      data[offset++] = 0 //area-label-priority
+      data[offset++] = 255 //area-label-constraints
+    }
+    for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //area-label-stroke-width
+      data[offset++] = 0 //reserved
+      data[offset++] = 0 //reserved
+      data[offset++] = 255 //reserved
     }
   }
   for (var y = zoomStart; y <= zoomEnd; y++) { //areaborder
