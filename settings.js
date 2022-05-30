@@ -3,9 +3,9 @@ module.exports = function () {
   var zoomEnd = 21 //inclusive
   var zoomCount = zoomEnd - zoomStart + 1
   var heights = {
-    point: 2*zoomCount,
-    line: 4*zoomCount,
-    area: 2*zoomCount,
+    point: 6*zoomCount,
+    line: 8*zoomCount,
+    area: 6*zoomCount,
     areaborder: 2*zoomCount
   }
   var totalHeight = heights.point + heights.line + heights.area + heights.areaborder

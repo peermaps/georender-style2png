@@ -1,6 +1,5 @@
 {
   "*": {
-    "point-size": 0,
     "line-fill-width[zoom>13]": 15,
     "line-fill-width[zoom<=13]": 2
   },
@@ -8,6 +7,7 @@
     "line-fill-color": "#000000"
   },
   "aerialway.{cable_car,gondola,goods,mixed_lift,other}": {
+    "point-fill-color": "#000000",
     "line-fill-color": "#000000",
     "line-fill-style": "dash"
   },

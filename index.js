@@ -39,6 +39,12 @@ module.exports = function (opts) {
       data[offset++] = 255 //point-label-fill-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //point-label-stroke-color R
+      data[offset++] = 0 //point-label-stroke-color G
+      data[offset++] = 0 //point-label-stroke-color B
+      data[offset++] = 255 //point-label-stroke-opacity
+    }
+    for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = 0 //point-label-font
       data[offset++] = 0 //point-label-font-size
       data[offset++] = 0 //point-label-priority
@@ -88,6 +94,12 @@ module.exports = function (opts) {
       data[offset++] = 255 //line-label-fill-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //line-label-stroke-color R
+      data[offset++] = 0 //line-label-stroke-color G
+      data[offset++] = 0 //line-label-stroke-color B
+      data[offset++] = 255 //line-label-stroke-opacity
+    }
+    for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = 0 //line-label-font
       data[offset++] = 0 //line-label-font-size
       data[offset++] = 0 //line-label-priority
@@ -119,6 +131,12 @@ module.exports = function (opts) {
       data[offset++] = 0 //area-label-fill-color G
       data[offset++] = 0 //area-label-fill-color B 
       data[offset++] = 255 //area-label-fill-opacity
+    }
+    for (var x = 0; x < fkeys.length; x++) {
+      data[offset++] = 0 //area-label-stroke-color R
+      data[offset++] = 0 //area-label-stroke-color G
+      data[offset++] = 0 //area-label-stroke-color B
+      data[offset++] = 255 //area-label-stroke-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = 0 //area-label-font
