@@ -27,10 +27,17 @@ module.exports = function (opts) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-opacity", y) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
+      var a = parseHex(getStyle(defaults, stylesheet, fkeys[x], "point-stroke-color", y))
+      data[offset++] = a[0] //r
+      data[offset++] = a[1] //g
+      data[offset++] = a[2] //b
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-opacity", y) //a
+    }
+    for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-size", y)
+      data[offset++] = 0 //point-stroke-width-inner
+      data[offset++] = 0 //point-stroke-width-outer
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-zindex", y)
-      data[offset++] = 0
-      data[offset++] = 255
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = 0 //point-label-fill-color R
@@ -52,9 +59,9 @@ module.exports = function (opts) {
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = 0 //point-label-stroke-width
-      data[offset++] = 0 //reserved
-      data[offset++] = 0 //reserved
-      data[offset++] = 255 //reserved
+      data[offset++] = 0 //point-label-sprite
+      data[offset++] = 0 //sprite0
+      data[offset++] = 255 //sprite1
     }
   }
   for (var y = zoomStart; y <= zoomEnd; y++) { //line
@@ -84,8 +91,8 @@ module.exports = function (opts) {
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-fill-width", y)
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-stroke-width", y)
+      data[offset++] = 0 //line-stroke-width-outer
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-zindex", y)
-      data[offset++] = 255
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = 0 //line-label-fill-color R
@@ -107,9 +114,9 @@ module.exports = function (opts) {
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = 0 //line-label-stroke-width
-      data[offset++] = 0 //reserved
-      data[offset++] = 0 //reserved
-      data[offset++] = 255 //reserved
+      data[offset++] = 0 //line-label-sprite
+      data[offset++] = 0 //sprite0
+      data[offset++] = 255 //sprite1
     }
   }
   for (var y = zoomStart; y <= zoomEnd; y++) { //area
@@ -122,7 +129,7 @@ module.exports = function (opts) {
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-zindex", y)
-      data[offset++] = 0 //reserved
+      data[offset++] = 0 //area-label-stroke-width
       data[offset++] = 0 //reserved
       data[offset++] = 255 //reserved
     }
@@ -145,9 +152,9 @@ module.exports = function (opts) {
       data[offset++] = 255 //area-label-constraints
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //area-label-stroke-width
-      data[offset++] = 0 //reserved
-      data[offset++] = 0 //reserved
+      data[offset++] = 0 //area-label-sprite
+      data[offset++] = 0 //sprite0
+      data[offset++] = 0 //sprite1
       data[offset++] = 255 //reserved
     }
   }
@@ -163,8 +170,14 @@ module.exports = function (opts) {
       var areaBorderStyle = parseAreaBorderStyle (defaults, stylesheet, fkeys[x], y)
       data[offset++] = areaBorderStyle.dashLength
       data[offset++] = areaBorderStyle.dashGap
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-width", y)
+      data[offset++] = 0 //areaborder-width-inner
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-width", y) //areaborder-width-outer
+    }
+    for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-zindex", y)
+      data[offset++] = 0 //sprite0
+      data[offset++] = 0 //sprite1
+      data[offset++] = 255 //reserved
     }
   }
   return { 
