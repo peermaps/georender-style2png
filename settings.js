@@ -3,10 +3,10 @@ module.exports = function () {
   var zoomEnd = 21 //inclusive
   var zoomCount = zoomEnd - zoomStart + 1
   var heights = {
-    point: 6*zoomCount,
+    point: 7*zoomCount,
     line: 8*zoomCount,
     area: 6*zoomCount,
-    areaborder: 2*zoomCount
+    areaborder: 3*zoomCount
   }
   var totalHeight = heights.point + heights.line + heights.area + heights.areaborder
   var r0 = heights.point/totalHeight

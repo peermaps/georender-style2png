@@ -27,10 +27,10 @@ module.exports = function (opts) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-opacity", y) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var a = parseHex(getStyle(defaults, stylesheet, fkeys[x], "point-stroke-color", y))
-      data[offset++] = a[0] //r
-      data[offset++] = a[1] //g
-      data[offset++] = a[2] //b
+      var b = parseHex(getStyle(defaults, stylesheet, fkeys[x], "point-stroke-color", y))
+      data[offset++] = b[0] //r
+      data[offset++] = b[1] //g
+      data[offset++] = b[2] //b
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-opacity", y) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
@@ -170,8 +170,8 @@ module.exports = function (opts) {
       var areaBorderStyle = parseAreaBorderStyle (defaults, stylesheet, fkeys[x], y)
       data[offset++] = areaBorderStyle.dashLength
       data[offset++] = areaBorderStyle.dashGap
-      data[offset++] = 0 //areaborder-width-inner
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-width", y) //areaborder-width-outer
+      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-width", y) //areaborder-width-inner
+      data[offset++] = 255 //areaborder-width-outer
     }
     for (var x = 0; x < fkeys.length; x++) {
       data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-zindex", y)
