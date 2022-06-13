@@ -154,7 +154,6 @@
     "line-stroke-style": "dash",
     "line-stroke-color": "#999999",
     "line-stroke-width": 0,
-    "line-stroke-dash-color": "",
     "area-fill-color": "#999999"
   },
   "boundary.administrative": {
@@ -475,7 +474,6 @@
     "line-stroke-color": "#228b22",
     "line-stroke-width": 0,
     "line-stroke-style": "dash",
-    "line-stroke-dash-color": "",
     "area-fill-color": "#5d5d5d"
   },
   "public_transport.station": {
@@ -495,7 +493,6 @@
     "line-stroke-color": "#5d5d5d",
     "line-stroke-width": 2,
     "line-stroke-style": "solid",
-    "line-stroke-dash-color": "",
     "line-stroke-dash-length": 20,
     "line-stroke-dash-gap": 20,
     "line-zindex": 7.0
