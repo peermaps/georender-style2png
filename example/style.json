@@ -1,7 +1,6 @@
 {
   "*": {
-    "line-fill-width[zoom>13]": 15,
-    "line-fill-width[zoom<=13]": 2
+    "point-size": 0
   },
   "aerialway.{chair_lift,drag_lift,j-bar,magic_carpet,platter,rope_tow,t-bar,zip_line}": {
     "line-fill-color": "#000000"
