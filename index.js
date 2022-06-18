@@ -45,7 +45,7 @@ module.exports = function (opts) {
       var offset = findOffset(x, 7*z+3, totalWidth)
       data[offset+0] = 0 //point-label-fill-color R
       data[offset+1] = 0 //point-label-fill-color G
-      data[offset+2] = 0 //point-label-fill-color B 
+      data[offset+2] = 0 //point-label-fill-color B
       data[offset+3] = 255 //point-label-fill-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
@@ -109,7 +109,7 @@ module.exports = function (opts) {
       var offset = findOffset(x, y+8*z+4, totalWidth)
       data[offset+0] = 0 //line-label-fill-color R
       data[offset+1] = 0 //line-label-fill-color G
-      data[offset+2] = 0 //line-label-fill-color B 
+      data[offset+2] = 0 //line-label-fill-color B
       data[offset+3] = 255 //line-label-fill-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
@@ -155,7 +155,7 @@ module.exports = function (opts) {
       var offset = findOffset(x, y+6*z+2, totalWidth)
       data[offset+0] = 0 //area-label-fill-color R
       data[offset+1] = 0 //area-label-fill-color G
-      data[offset+2] = 0 //area-label-fill-color B 
+      data[offset+2] = 0 //area-label-fill-color B
       data[offset+3] = 255 //area-label-fill-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
