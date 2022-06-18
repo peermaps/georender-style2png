@@ -12,177 +12,203 @@ module.exports = function (opts) {
   var fkeys = opts.features
   var lw
   var heights = settings.heights
-  var ranges = settings.ranges
   var totalHeight = settings.totalHeight
-  var arrLength = 4*fkeys.length*totalHeight
+  var totalWidth = fkeys.length + 200
+  var arrLength = 4*totalWidth*totalHeight
 
   var data = new Uint8Array(arrLength)
-  var offset = 0
-  for (var y = zoomStart; y <= zoomEnd; y++) { //point
+  for (var z = zoomStart; z <= zoomEnd; z++) { //point
     for (var x = 0; x < fkeys.length; x++) {
-      var a = parseHex(getStyle(defaults, stylesheet, fkeys[x], "point-fill-color", y))
-      data[offset++] = a[0] //r
-      data[offset++] = a[1] //g
-      data[offset++] = a[2] //b
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-opacity", y) //a
+      var offset = findOffset(x, 7*z+0, totalWidth)
+      var a = parseHex(getStyle(defaults, stylesheet, fkeys[x], "point-fill-color", z))
+      data[offset+0] = a[0] //r
+      data[offset+1] = a[1] //g
+      data[offset+2] = a[2] //b
+      data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "point-opacity", z) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var b = parseHex(getStyle(defaults, stylesheet, fkeys[x], "point-stroke-color", y))
-      data[offset++] = b[0] //r
-      data[offset++] = b[1] //g
-      data[offset++] = b[2] //b
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-opacity", y) //a
+      var offset = findOffset(x, 7*z+1, totalWidth)
+      var b = parseHex(getStyle(defaults, stylesheet, fkeys[x], "point-stroke-color", z))
+      data[offset+0] = b[0] //r
+      data[offset+1] = b[1] //g
+      data[offset+2] = b[2] //b
+      data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "point-opacity", z) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-size", y)
-      data[offset++] = 0 //point-stroke-width-inner
-      data[offset++] = 0 //point-stroke-width-outer
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "point-zindex", y)
+      var offset = findOffset(x, 7*z+2, totalWidth)
+      data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "point-size", z)
+      data[offset+1] = 0 //point-stroke-width-inner
+      data[offset+2] = 0 //point-stroke-width-outer
+      data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "point-zindex", z)
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //point-label-fill-color R
-      data[offset++] = 0 //point-label-fill-color G
-      data[offset++] = 0 //point-label-fill-color B 
-      data[offset++] = 255 //point-label-fill-opacity
+      var offset = findOffset(x, 7*z+3, totalWidth)
+      data[offset+0] = 0 //point-label-fill-color R
+      data[offset+1] = 0 //point-label-fill-color G
+      data[offset+2] = 0 //point-label-fill-color B 
+      data[offset+3] = 255 //point-label-fill-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //point-label-stroke-color R
-      data[offset++] = 0 //point-label-stroke-color G
-      data[offset++] = 0 //point-label-stroke-color B
-      data[offset++] = 255 //point-label-stroke-opacity
+      var offset = findOffset(x, 7*z+4, totalWidth)
+      data[offset+0] = 0 //point-label-stroke-color R
+      data[offset+1] = 0 //point-label-stroke-color G
+      data[offset+2] = 0 //point-label-stroke-color B
+      data[offset+3] = 255 //point-label-stroke-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //point-label-font
-      data[offset++] = 0 //point-label-font-size
-      data[offset++] = 0 //point-label-priority
-      data[offset++] = 255 //point-label-constraints
+      var offset = findOffset(x, 7*z+5, totalWidth)
+      data[offset+0] = 0 //point-label-font
+      data[offset+1] = 0 //point-label-font-size
+      data[offset+2] = 0 //point-label-priority
+      data[offset+3] = 255 //point-label-constraints
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //point-label-stroke-width
-      data[offset++] = 0 //point-label-sprite
-      data[offset++] = 0 //sprite0
-      data[offset++] = 255 //sprite1
+      var offset = findOffset(x, 7*z+6, totalWidth)
+      data[offset+0] = 0 //point-label-stroke-width
+      data[offset+1] = 0 //point-label-sprite
+      data[offset+2] = 0 //sprite0
+      data[offset+3] = 255 //sprite1
     }
   }
-  for (var y = zoomStart; y <= zoomEnd; y++) { //line
+  var y = heights.point
+  for (var z = zoomStart; z <= zoomEnd; z++) { //line
     for (var x = 0; x < fkeys.length; x++) {
-      var b = parseHex(getStyle(defaults, stylesheet, fkeys[x], "line-fill-color", y))
-      data[offset++] = b[0] //r
-      data[offset++] = b[1] //g
-      data[offset++] = b[2] //b
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-opacity", y) //a
+      var offset = findOffset(x, y+8*z+0, totalWidth)
+      var b = parseHex(getStyle(defaults, stylesheet, fkeys[x], "line-fill-color", z))
+      data[offset+0] = b[0] //r
+      data[offset+1] = b[1] //g
+      data[offset+2] = b[2] //b
+      data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "line-opacity", z) //a
       }
     for (var x = 0; x < fkeys.length; x++) {
-      var c = parseHex(getStyle(defaults, stylesheet, fkeys[x], "line-stroke-color", y))
-      data[offset++] = c[0] //r
-      data[offset++] = c[1] //g
-      data[offset++] = c[2] //b
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-opacity", y) //a
+      var offset = findOffset(x, y+8*z+1, totalWidth)
+      var c = parseHex(getStyle(defaults, stylesheet, fkeys[x], "line-stroke-color", z))
+      data[offset+0] = c[0] //r
+      data[offset+1] = c[1] //g
+      data[offset+2] = c[2] //b
+      data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "line-opacity", z) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
+      var offset = findOffset(x, y+8*z+2, totalWidth)
       var lineStyleFill = parseLineStyle(defaults, stylesheet, fkeys[x], 'fill')
       var lineStyleStroke = parseLineStyle(defaults, stylesheet, fkeys[x], 'stroke')
 
-      data[offset++] = lineStyleFill.dashLength
-      data[offset++] = lineStyleFill.dashGap
-      data[offset++] = lineStyleStroke.dashLength
-      data[offset++] = lineStyleStroke.dashGap
+      data[offset+0] = lineStyleFill.dashLength
+      data[offset+1] = lineStyleFill.dashGap
+      data[offset+2] = lineStyleStroke.dashLength
+      data[offset+3] = lineStyleStroke.dashGap
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-fill-width", y)
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-stroke-width", y)
-      data[offset++] = 0 //line-stroke-width-outer
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "line-zindex", y)
+      var offset = findOffset(x, y+8*z+3, totalWidth)
+      data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "line-fill-width", z)
+      data[offset+1] = getStyle(defaults, stylesheet, fkeys[x], "line-stroke-width", z)
+      data[offset+2] = 0 //line-stroke-width-outer
+      data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "line-zindex", z)
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //line-label-fill-color R
-      data[offset++] = 0 //line-label-fill-color G
-      data[offset++] = 0 //line-label-fill-color B 
-      data[offset++] = 255 //line-label-fill-opacity
+      var offset = findOffset(x, y+8*z+4, totalWidth)
+      data[offset+0] = 0 //line-label-fill-color R
+      data[offset+1] = 0 //line-label-fill-color G
+      data[offset+2] = 0 //line-label-fill-color B 
+      data[offset+3] = 255 //line-label-fill-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //line-label-stroke-color R
-      data[offset++] = 0 //line-label-stroke-color G
-      data[offset++] = 0 //line-label-stroke-color B
-      data[offset++] = 255 //line-label-stroke-opacity
+      var offset = findOffset(x, y+8*z+5, totalWidth)
+      data[offset+0] = 0 //line-label-stroke-color R
+      data[offset+1] = 0 //line-label-stroke-color G
+      data[offset+2] = 0 //line-label-stroke-color B
+      data[offset+3] = 255 //line-label-stroke-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //line-label-font
-      data[offset++] = 0 //line-label-font-size
-      data[offset++] = 0 //line-label-priority
-      data[offset++] = 255 //line-label-constraints
+      var offset = findOffset(x, y+8*z+6, totalWidth)
+      data[offset+0] = 0 //line-label-font
+      data[offset+1] = 0 //line-label-font-size
+      data[offset+2] = 0 //line-label-priority
+      data[offset+3] = 255 //line-label-constraints
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //line-label-stroke-width
-      data[offset++] = 0 //line-label-sprite
-      data[offset++] = 0 //sprite0
-      data[offset++] = 255 //sprite1
+      var offset = findOffset(x, y+8*z+7, totalWidth)
+      data[offset+0] = 0 //line-label-stroke-width
+      data[offset+1] = 0 //line-label-sprite
+      data[offset+2] = 0 //sprite0
+      data[offset+3] = 255 //sprite1
     }
   }
-  for (var y = zoomStart; y <= zoomEnd; y++) { //area
+  var y = heights.point + heights.line
+  for (var z = zoomStart; z <= zoomEnd; z++) { //area
     for (var x = 0; x < fkeys.length; x++) {
-      var d = parseHex(getStyle(defaults, stylesheet, fkeys[x], "area-fill-color", y))
-      data[offset++] = d[0] //r
-      data[offset++] = d[1] //g
-      data[offset++] = d[2] //b
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-opacity", y) //a
+      var offset = findOffset(x, y+6*z+0, totalWidth)
+      var d = parseHex(getStyle(defaults, stylesheet, fkeys[x], "area-fill-color", z))
+      data[offset+0] = d[0] //r
+      data[offset+1] = d[1] //g
+      data[offset+2] = d[2] //b
+      data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "area-opacity", z) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-zindex", y)
-      data[offset++] = 0 //area-label-stroke-width
-      data[offset++] = 0 //reserved
-      data[offset++] = 255 //reserved
+      var offset = findOffset(x, y+6*z+1, totalWidth)
+      data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "area-zindex", z)
+      data[offset+1] = 0 //area-label-stroke-width
+      data[offset+2] = 0 //reserved
+      data[offset+3] = 255 //reserved
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //area-label-fill-color R
-      data[offset++] = 0 //area-label-fill-color G
-      data[offset++] = 0 //area-label-fill-color B 
-      data[offset++] = 255 //area-label-fill-opacity
+      var offset = findOffset(x, y+6*z+2, totalWidth)
+      data[offset+0] = 0 //area-label-fill-color R
+      data[offset+1] = 0 //area-label-fill-color G
+      data[offset+2] = 0 //area-label-fill-color B 
+      data[offset+3] = 255 //area-label-fill-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //area-label-stroke-color R
-      data[offset++] = 0 //area-label-stroke-color G
-      data[offset++] = 0 //area-label-stroke-color B
-      data[offset++] = 255 //area-label-stroke-opacity
+      var offset = findOffset(x, y+6*z+3, totalWidth)
+      data[offset+0] = 0 //area-label-stroke-color R
+      data[offset+1] = 0 //area-label-stroke-color G
+      data[offset+2] = 0 //area-label-stroke-color B
+      data[offset+3] = 255 //area-label-stroke-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //area-label-font
-      data[offset++] = 0 //area-label-font-size
-      data[offset++] = 0 //area-label-priority
-      data[offset++] = 255 //area-label-constraints
+      var offset = findOffset(x, y+6*z+4, totalWidth)
+      data[offset+0] = 0 //area-label-font
+      data[offset+1] = 0 //area-label-font-size
+      data[offset+2] = 0 //area-label-priority
+      data[offset+3] = 255 //area-label-constraints
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = 0 //area-label-sprite
-      data[offset++] = 0 //sprite0
-      data[offset++] = 0 //sprite1
-      data[offset++] = 255 //reserved
+      var offset = findOffset(x, y+6*z+5, totalWidth)
+      data[offset+0] = 0 //area-label-sprite
+      data[offset+1] = 0 //sprite0
+      data[offset+2] = 0 //sprite1
+      data[offset+3] = 255 //reserved
     }
   }
+  var y = heights.point + heights.line + heights.area
   for (var y = zoomStart; y <= zoomEnd; y++) { //areaborder
     for (var x = 0; x < fkeys.length; x++) {
-      var d = parseHex(getStyle(defaults, stylesheet, fkeys[x], "area-border-color", y))
-      data[offset++] = d[0] //r
-      data[offset++] = d[1] //g
-      data[offset++] = d[2] //b
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-opacity", y) //a
+      var offset = findOffset(x, y+3*z+0, totalWidth)
+      var d = parseHex(getStyle(defaults, stylesheet, fkeys[x], "area-border-color", z))
+      data[offset+0] = d[0] //r
+      data[offset+1] = d[1] //g
+      data[offset+2] = d[2] //b
+      data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "area-border-opacity", z) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var areaBorderStyle = parseAreaBorderStyle (defaults, stylesheet, fkeys[x], y)
-      data[offset++] = areaBorderStyle.dashLength
-      data[offset++] = areaBorderStyle.dashGap
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-width", y) //areaborder-width-inner
-      data[offset++] = 255 //areaborder-width-outer
+      var offset = findOffset(x, y+3*z+1, totalWidth)
+      var areaBorderStyle = parseAreaBorderStyle (defaults, stylesheet, fkeys[x], z)
+      data[offset+0] = areaBorderStyle.dashLength
+      data[offset+1] = areaBorderStyle.dashGap
+      data[offset+2] = getStyle(defaults, stylesheet, fkeys[x], "area-border-width", z) //areaborder-width-inner
+      data[offset+3] = 255 //areaborder-width-outer
     }
     for (var x = 0; x < fkeys.length; x++) {
-      data[offset++] = getStyle(defaults, stylesheet, fkeys[x], "area-border-zindex", y)
-      data[offset++] = 0 //sprite0
-      data[offset++] = 0 //sprite1
-      data[offset++] = 255 //reserved
+      var offset = findOffset(x, y+3*z+2, totalWidth)
+      data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "area-border-zindex", z)
+      data[offset+1] = 0 //sprite0
+      data[offset+2] = 0 //sprite1
+      data[offset+3] = 255 //reserved
     }
   }
   return { 
     data,
-    width: fkeys.length,
+    width: totalWidth,
     height: totalHeight
   }
 }
@@ -294,4 +320,8 @@ function parseKeys (stylesheet) {
     }
   }
   return stylesheet
+}
+
+function findOffset(x, y, imageWidth) {
+  return (x + imageWidth * y) * 4
 }

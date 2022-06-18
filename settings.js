@@ -8,7 +8,7 @@ module.exports = function () {
     area: 6*zoomCount,
     areaborder: 3*zoomCount
   }
-  var totalHeight = heights.point + heights.line + heights.area + heights.areaborder
+  var totalHeight = heights.point + heights.line + heights.area + heights.areaborder + 200
   var r0 = heights.point/totalHeight
   var r1 = (heights.point + heights.line)/totalHeight
   var r2 = (heights.point + heights.line + heights.area)/totalHeight
