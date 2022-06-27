@@ -6,24 +6,18 @@ module.exports = function () {
     point: 7*zoomCount,
     line: 8*zoomCount,
     area: 6*zoomCount,
-    areaborder: 3*zoomCount
+    areaborder: 3*zoomCount,
+    sprite: 10*zoomCount
   }
-  var totalHeight = heights.point + heights.line + heights.area + heights.areaborder + 200
-  var r0 = heights.point/totalHeight
-  var r1 = (heights.point + heights.line)/totalHeight
-  var r2 = (heights.point + heights.line + heights.area)/totalHeight
-  var ranges = [
-    [0, r0],
-    [r0, r1],
-    [r1, r2],
-    [r2, 1]
+  var imageHeight = heights.point + heights.line + heights.area + heights.areaborder + heights.sprite
+  var imageWidth = 1240 + 50
   ]
 
   return { 
     zoomStart,
     zoomEnd,
     heights,
-    totalHeight,
-    ranges
+    imageHeight,
+    imageWidth
   }
 }

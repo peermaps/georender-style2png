@@ -1,6 +1,6 @@
 {
-  "point-size": 0,
-  "point-fill-color": "#1f5a92",
+  "point-size": 5,
+  "point-fill-color": "#0000FF",
   "point-stroke-color": "#FFFFFF",
   "point-stroke-width": 0,
   "point-opacity": 100,
@@ -15,7 +15,7 @@
   "point-label-fill-opacity": 100,
   "point-label-stroke-opacity": 100,
   "line-fill-width": 2,
-  "line-fill-color": "#1f9393",
+  "line-fill-color": "#0000FF",
   "line-fill-style": "solid",
   "line-fill-dash-color": "",
   "line-fill-dash-length": 12,

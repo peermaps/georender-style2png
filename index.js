@@ -12,14 +12,14 @@ module.exports = function (opts) {
   var fkeys = opts.features
   var lw
   var heights = settings.heights
-  var totalHeight = settings.totalHeight
-  var totalWidth = fkeys.length + 200
+  var totalHeight = settings.imageHeight
+  var totalWidth = settings.imageWidth
   var arrLength = 4*totalWidth*totalHeight
 
   var data = new Uint8Array(arrLength)
   for (var z = zoomStart; z <= zoomEnd; z++) { //point
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, 7*z+0, totalWidth)
+      var offset = findOffset(x, 7*(z-zoomStart)+0, totalWidth)
       var a = parseHex(getStyle(defaults, stylesheet, fkeys[x], "point-fill-color", z))
       data[offset+0] = a[0] //r
       data[offset+1] = a[1] //g
@@ -27,7 +27,7 @@ module.exports = function (opts) {
       data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "point-opacity", z) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, 7*z+1, totalWidth)
+      var offset = findOffset(x, 7*(z-zoomStart)+1, totalWidth)
       var b = parseHex(getStyle(defaults, stylesheet, fkeys[x], "point-stroke-color", z))
       data[offset+0] = b[0] //r
       data[offset+1] = b[1] //g
@@ -35,35 +35,35 @@ module.exports = function (opts) {
       data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "point-opacity", z) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, 7*z+2, totalWidth)
+      var offset = findOffset(x, 7*(z-zoomStart)+2, totalWidth)
       data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "point-size", z)
       data[offset+1] = 0 //point-stroke-width-inner
       data[offset+2] = 0 //point-stroke-width-outer
       data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "point-zindex", z)
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, 7*z+3, totalWidth)
+      var offset = findOffset(x, 7*(z-zoomStart)+3, totalWidth)
       data[offset+0] = 0 //point-label-fill-color R
       data[offset+1] = 0 //point-label-fill-color G
       data[offset+2] = 0 //point-label-fill-color B
       data[offset+3] = 255 //point-label-fill-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, 7*z+4, totalWidth)
+      var offset = findOffset(x, 7*(z-zoomStart)+4, totalWidth)
       data[offset+0] = 0 //point-label-stroke-color R
       data[offset+1] = 0 //point-label-stroke-color G
       data[offset+2] = 0 //point-label-stroke-color B
       data[offset+3] = 255 //point-label-stroke-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, 7*z+5, totalWidth)
+      var offset = findOffset(x, 7*(z-zoomStart)+5, totalWidth)
       data[offset+0] = 0 //point-label-font
       data[offset+1] = 0 //point-label-font-size
       data[offset+2] = 0 //point-label-priority
       data[offset+3] = 255 //point-label-constraints
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, 7*z+6, totalWidth)
+      var offset = findOffset(x, 7*(z-zoomStart)+6, totalWidth)
       data[offset+0] = 0 //point-label-stroke-width
       data[offset+1] = 0 //point-label-sprite
       data[offset+2] = 0 //sprite0
@@ -73,7 +73,7 @@ module.exports = function (opts) {
   var y = heights.point
   for (var z = zoomStart; z <= zoomEnd; z++) { //line
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+8*z+0, totalWidth)
+      var offset = findOffset(x, y+8*(z-zoomStart)+0, totalWidth)
       var b = parseHex(getStyle(defaults, stylesheet, fkeys[x], "line-fill-color", z))
       data[offset+0] = b[0] //r
       data[offset+1] = b[1] //g
@@ -81,7 +81,7 @@ module.exports = function (opts) {
       data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "line-opacity", z) //a
       }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+8*z+1, totalWidth)
+      var offset = findOffset(x, y+8*(z-zoomStart)+1, totalWidth)
       var c = parseHex(getStyle(defaults, stylesheet, fkeys[x], "line-stroke-color", z))
       data[offset+0] = c[0] //r
       data[offset+1] = c[1] //g
@@ -89,7 +89,7 @@ module.exports = function (opts) {
       data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "line-opacity", z) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+8*z+2, totalWidth)
+      var offset = findOffset(x, y+8*(z-zoomStart)+2, totalWidth)
       var lineStyleFill = parseLineStyle(defaults, stylesheet, fkeys[x], 'fill')
       var lineStyleStroke = parseLineStyle(defaults, stylesheet, fkeys[x], 'stroke')
 
@@ -99,35 +99,35 @@ module.exports = function (opts) {
       data[offset+3] = lineStyleStroke.dashGap
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+8*z+3, totalWidth)
+      var offset = findOffset(x, y+8*(z-zoomStart)+3, totalWidth)
       data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "line-fill-width", z)
       data[offset+1] = getStyle(defaults, stylesheet, fkeys[x], "line-stroke-width", z)
       data[offset+2] = 0 //line-stroke-width-outer
       data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "line-zindex", z)
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+8*z+4, totalWidth)
+      var offset = findOffset(x, y+8*(z-zoomStart)+4, totalWidth)
       data[offset+0] = 0 //line-label-fill-color R
       data[offset+1] = 0 //line-label-fill-color G
       data[offset+2] = 0 //line-label-fill-color B
       data[offset+3] = 255 //line-label-fill-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+8*z+5, totalWidth)
+      var offset = findOffset(x, y+8*(z-zoomStart)+5, totalWidth)
       data[offset+0] = 0 //line-label-stroke-color R
       data[offset+1] = 0 //line-label-stroke-color G
       data[offset+2] = 0 //line-label-stroke-color B
       data[offset+3] = 255 //line-label-stroke-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+8*z+6, totalWidth)
+      var offset = findOffset(x, y+8*(z-zoomStart)+6, totalWidth)
       data[offset+0] = 0 //line-label-font
       data[offset+1] = 0 //line-label-font-size
       data[offset+2] = 0 //line-label-priority
       data[offset+3] = 255 //line-label-constraints
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+8*z+7, totalWidth)
+      var offset = findOffset(x, y+8*(z-zoomStart)+7, totalWidth)
       data[offset+0] = 0 //line-label-stroke-width
       data[offset+1] = 0 //line-label-sprite
       data[offset+2] = 0 //sprite0
@@ -137,7 +137,7 @@ module.exports = function (opts) {
   var y = heights.point + heights.line
   for (var z = zoomStart; z <= zoomEnd; z++) { //area
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+6*z+0, totalWidth)
+      var offset = findOffset(x, y+6*(z-zoomStart)+0, totalWidth)
       var d = parseHex(getStyle(defaults, stylesheet, fkeys[x], "area-fill-color", z))
       data[offset+0] = d[0] //r
       data[offset+1] = d[1] //g
@@ -145,45 +145,45 @@ module.exports = function (opts) {
       data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "area-opacity", z) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+6*z+1, totalWidth)
+      var offset = findOffset(x, y+6*(z-zoomStart)+1, totalWidth)
       data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "area-zindex", z)
       data[offset+1] = 0 //area-label-stroke-width
       data[offset+2] = 0 //reserved
       data[offset+3] = 255 //reserved
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+6*z+2, totalWidth)
+      var offset = findOffset(x, y+6*(z-zoomStart)+2, totalWidth)
       data[offset+0] = 0 //area-label-fill-color R
       data[offset+1] = 0 //area-label-fill-color G
       data[offset+2] = 0 //area-label-fill-color B
       data[offset+3] = 255 //area-label-fill-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+6*z+3, totalWidth)
+      var offset = findOffset(x, y+6*(z-zoomStart)+3, totalWidth)
       data[offset+0] = 0 //area-label-stroke-color R
       data[offset+1] = 0 //area-label-stroke-color G
       data[offset+2] = 0 //area-label-stroke-color B
       data[offset+3] = 255 //area-label-stroke-opacity
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+6*z+4, totalWidth)
+      var offset = findOffset(x, y+6*(z-zoomStart)+4, totalWidth)
       data[offset+0] = 0 //area-label-font
       data[offset+1] = 0 //area-label-font-size
       data[offset+2] = 0 //area-label-priority
       data[offset+3] = 255 //area-label-constraints
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+6*z+5, totalWidth)
+      var offset = findOffset(x, y+6*(z-zoomStart)+5, totalWidth)
       data[offset+0] = 0 //area-label-sprite
       data[offset+1] = 0 //sprite0
-      data[offset+2] = 0 //sprite1
+      data[offset+2] = 255 //sprite1
       data[offset+3] = 255 //reserved
     }
   }
   var y = heights.point + heights.line + heights.area
-  for (var y = zoomStart; y <= zoomEnd; y++) { //areaborder
+  for (var z = zoomStart; z <= zoomEnd; z++) { //areaborder
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+3*z+0, totalWidth)
+      var offset = findOffset(x, y+3*(z-zoomStart)+0, totalWidth)
       var d = parseHex(getStyle(defaults, stylesheet, fkeys[x], "area-border-color", z))
       data[offset+0] = d[0] //r
       data[offset+1] = d[1] //g
@@ -191,7 +191,7 @@ module.exports = function (opts) {
       data[offset+3] = getStyle(defaults, stylesheet, fkeys[x], "area-border-opacity", z) //a
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+3*z+1, totalWidth)
+      var offset = findOffset(x, y+3*(z-zoomStart)+1, totalWidth)
       var areaBorderStyle = parseAreaBorderStyle (defaults, stylesheet, fkeys[x], z)
       data[offset+0] = areaBorderStyle.dashLength
       data[offset+1] = areaBorderStyle.dashGap
@@ -199,7 +199,7 @@ module.exports = function (opts) {
       data[offset+3] = 255 //areaborder-width-outer
     }
     for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+3*z+2, totalWidth)
+      var offset = findOffset(x, y+3*(z-zoomStart)+2, totalWidth)
       data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "area-border-zindex", z)
       data[offset+1] = 0 //sprite0
       data[offset+2] = 0 //sprite1
