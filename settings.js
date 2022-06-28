@@ -11,7 +11,6 @@ module.exports = function () {
   }
   var imageHeight = heights.point + heights.line + heights.area + heights.areaborder + heights.sprite
   var imageWidth = 1240 + 50
-  ]
 
   return { 
     zoomStart,
