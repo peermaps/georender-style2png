@@ -7,14 +7,17 @@ var zoomEnd = settings.zoomEnd //inclusive
 module.exports = function (opts) {
   var defaults = opts.defaults
   var stylesheet = opts.stylesheet
-  parseKeys(stylesheet)
-  parseZooms(stylesheet)
   var fkeys = opts.features
+  var spriteFileNames = new Set()
+  parseKeys(stylesheet)
+  getSprites(defaults, stylesheet, spriteFileNames)
+  parseZooms(stylesheet)
   var lw
   var heights = settings.heights
   var totalHeight = settings.imageHeight
   var totalWidth = settings.imageWidth
   var arrLength = 4*totalWidth*totalHeight
+
 
   var data = new Uint8Array(arrLength)
   for (var z = zoomStart; z <= zoomEnd; z++) { //point
@@ -322,6 +325,33 @@ function parseKeys (stylesheet) {
   return stylesheet
 }
 
+function getSprites (defaults, stylesheet, spriteFileNames) {
+  var dkeys = Object.keys(defaults)
+  var keys = Object.keys(stylesheet)
+  var re = /(-sprite)+/g
+  for (var h=0; h<dkeys.length; h++) {
+    if (dkeys[h].match(re) !== null) {
+      spriteFileNames.add(defaults[dkeys[h]])
+    }
+  }
+  for (var i=0; i<keys.length; i++) {
+    if (stylesheet[keys[i]] !== undefined) {
+      k = Object.keys(stylesheet[keys[i]])
+      for (var j=0; j<k.length; j++) {
+        if (k[j].match(re) !== null) {
+          spriteFileNames.add(stylesheet[keys[i]][k[j]])
+        }
+      }
+    }
+  }
+  return spriteFileNames
+}
+
 function findOffset(x, y, imageWidth) {
   return (x + imageWidth * y) * 4
 }
+
+//use fs readfile, not readfile sync. change function so that instead of return,
+//it takes a callback.
+
+//instead of indexOf, use 'set'
