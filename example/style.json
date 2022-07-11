@@ -1,7 +1,4 @@
 {
-  "*": {
-    "point-size": 0
-  },
   "aerialway.{chair_lift,drag_lift,j-bar,magic_carpet,platter,rope_tow,t-bar,zip_line}": {
     "line-fill-color": "#000000"
   },
@@ -24,6 +21,7 @@
   "amenity.*": {
     "point-size": 5,
     "point-fill-color": "#ffc49d",
+    "point-sprite": "sprites/tandiamond.png",
     "area-fill-color": "#ffc49d"
   },
   "amenity.bus_station, aerialway.station": {
@@ -41,9 +39,10 @@
   },
   "amenity.clinic": {
     "point-size": 5,
-    "point.fill-color": "#ecb9af",
+    "point-fill-color": "#ecb9af",
     "line-fill-color": "#ecb9af",
-    "area-fill-color": "#ecb9af"
+    "area-fill-color": "#ecb9af",
+    "area-sprite": "sprites/redcross.png"
   },
   "amenity.college": {
     "point-fill-color": "#b59260",
@@ -430,17 +429,20 @@
     "area-border-color": "#7c7cbc",
     "area-border-width": 1,
     "area-zindex": 4.0,
+    "area-fill-pattern": "sprites/patwavesoffset.png",
     "label-fill-color": "#000000",
     "label-stroke-color": "#FFFFFF"
   },
   "natural.wetland": {
-    "area-fill-color": "#5b863f"
+    "area-fill-color": "#5b863f",
+    "area-fill-pattern": "sprites/patblueovals.png"
   },
   "natural.wood": {
     "point-size": 5,
     "point-fill-color": "#a9d1c2",
     "area-fill-color": "#a9d1c2",
     "area-zindex": 3.0,
+    "area-fill-pattern": "sprites/patdotsgreen.png",
     "area-border-color": "#b8c2be",
     "area-border-width": 2
   },

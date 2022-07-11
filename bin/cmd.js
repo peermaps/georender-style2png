@@ -21,16 +21,16 @@ if (!sfile) usage(2)
 var ffile = args.features || require.resolve('georender-pack/features.json')
 var dfile = args.defaults || require.resolve('../defaults.json')
 
-var tex = makeTex({
+makeTex({
   stylesheet: JSON.parse(fs.readFileSync(sfile, 'utf8')),
   features: JSON.parse(fs.readFileSync(ffile, 'utf8')),
   defaults: JSON.parse(fs.readFileSync(dfile, 'utf8'))
+}, function (err, tex) {
+  if (err) return console.error(err)
+  var png = makePNG.encode(tex)
+  if (args.outfile === '-') { process.stdout.write(png) }
+  else fs.writeFileSync(args.outfile, png)
 })
-
-var png = makePNG.encode(tex)
-
-if (args.outfile === '-') { process.stdout.write(png) }
-else fs.writeFileSync(args.outfile, png)
 
 function usage (code) {
   console.log(`

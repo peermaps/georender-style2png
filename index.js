@@ -1,30 +1,90 @@
 var fs = require('fs')
+var makePNG = require('fast-png')
+var binpack = require('bin-pack')
 var expand = require('brace-expansion')
 var evalExpr = require('./lib/expr.js')
 var settings = require('./settings.js')()
 var zoomStart = settings.zoomStart
 var zoomEnd = settings.zoomEnd //inclusive
 
-module.exports = function (opts) {
+/*
+loop over sprite data and copy each value into an r, g, b, a, etc.
+build inverse of fileOffset. give it a file offset index and receive x and y
+coordinates. as loop over indexes, 0 to data.length, get x and y coordinate and
+step by 4. or 2 loops: y on outside, x on inside
+*/
+
+
+module.exports = function (opts, cb) {
+  var defaults = opts.defaults
+  var stylesheet = opts.stylesheet
+  parseKeys(stylesheet)
+  var spriteFiles = getSpriteFiles(stylesheet)
+  readSpriteFiles(spriteFiles, function (err, sprites) {
+    if (err) cb(err)
+    else cb(null, write(sprites, opts))
+  })
+}
+
+function write (sprites, opts) {
+  var fkeys = opts.features
+  var aSprites = []
+  var spriteKeys = Object.keys(sprites)
+  console.log('spriteKeys:', spriteKeys)
+  for (var i = 0; i < spriteKeys.length; i++) {
+    var key = spriteKeys[i]
+    aSprites.push(sprites[key])
+    sprites[key].index = i
+  }
+  var packedSprites = binpack(aSprites, { inPlace: true })
+  var smHeight = Math.ceil(spriteKeys.length*2/fkeys.length)
+  var totalHeight = settings.imageHeight + smHeight + packedSprites.height
+  var totalWidth = Math.max(settings.imageWidth, packedSprites.width)
+  var dataLength = 4*totalWidth*totalHeight
+  var data = new Uint8Array(dataLength)
+  writeFeatures(data, opts, totalWidth, sprites)
+  writeSpriteMeta(data, opts, aSprites)
+  //writeSprite(data, aSprites)
+  return { 
+    data,
+    width: totalWidth,
+    height: totalHeight
+  }
+}
+
+function writeSpriteMeta(data, opts, sprites) {
+  var spriteKeys = Object.keys(sprites)
+  var smheight = 2 //calculate this properly
+  var heights = settings.heights
+  var fkeys = opts.features
+  var y0 = heights.point + heights.line + heights.area + heights.areaborder
+  for (var i=0; i<sprites.length; i++) {
+    var s = sprites[i]
+    var y = Math.floor(i/fkeys.length)*2
+    var x = i%fkeys.length
+    var isVector = false
+    var offset = findOffset(x, y0+y+0)
+    data[offset+0] = Math.floor(s.width/256)
+    data[offset+1] = s.width%256
+    var h0 = Math.floor(s.height/256) + (isVector ? 127 : 0)
+    data[offset+2] = h0
+    data[offset+3] = s.height%256
+    var offset = findOffset(x, y0+y+1)
+    //below offsets should be into sprite block
+    var soffset = [s.x, s.y]
+    data[offset+0] = Math.floor(soffset[0]) 
+    data[offset+1] = soffset[0]%256
+    data[offset+2] = Math.floor(soffset[1]/256)
+    data[offset+3] = soffset[1]%256
+  }
+}
+
+function writeFeatures(data, opts, totalWidth, sprites) {
   var defaults = opts.defaults
   var stylesheet = opts.stylesheet
   var fkeys = opts.features
-  parseKeys(stylesheet)
-  /*
-  var spriteFiles = getSpriteFiles(defaults, stylesheet)
-  readSpriteFiles(spriteFiles, function (err, sprites) {
-    console.log(err, sprites)
-  })
-  */
-  parseZooms(stylesheet)
-  var lw
   var heights = settings.heights
-  var totalHeight = settings.imageHeight
-  var totalWidth = settings.imageWidth
-  var arrLength = 4*totalWidth*totalHeight
-
-
-  var data = new Uint8Array(arrLength)
+  parseZooms(stylesheet)
   for (var z = zoomStart; z <= zoomEnd; z++) { //point
     for (var x = 0; x < fkeys.length; x++) {
       var offset = findOffset(x, 7*(z-zoomStart)+0, totalWidth)
@@ -75,9 +135,13 @@ module.exports = function (opts) {
     for (var x = 0; x < fkeys.length; x++) {
       var offset = findOffset(x, 7*(z-zoomStart)+6, totalWidth)
       data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "point-label-stroke-width", z)
-      data[offset+1] = getSprite() //point-label-sprite
-      data[offset+2] = getSprite() //sprite0
-      data[offset+3] = 255 || getSprite() //sprite1
+
+      var file = getStyle(defaults, stylesheet, fkeys[x], "point-sprite", z)
+      var si = file === undefined ? 0 : sprites[file].index + 1
+      if (si !== 0) console.log(si)
+      data[offset+1] = Math.floor(si/256)
+      data[offset+2] = si%256
+      data[offset+3] = 0
     }
   }
   var y = heights.point
@@ -142,9 +206,12 @@ module.exports = function (opts) {
     for (var x = 0; x < fkeys.length; x++) {
       var offset = findOffset(x, y+8*(z-zoomStart)+7, totalWidth)
       data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "line-label-stroke-width", z)
-      data[offset+1] = getSprite() //line-label-sprite
-      data[offset+2] = getSprite() //sprite0
-      data[offset+3] = 255 || getSprite() //sprite1
+      var file = getStyle(defaults, stylesheet, fkeys[x], "line-sprite", z)
+      var si = file === undefined ? 0 : sprites[file].index + 1
+      if (si !== 0) console.log(si)
+      data[offset+1] = Math.floor(si/256)
+      data[offset+2] = si%256
+      data[offset+3] = 255
     }
   }
   var y = heights.point + heights.line
@@ -161,8 +228,11 @@ module.exports = function (opts) {
       var offset = findOffset(x, y+6*(z-zoomStart)+1, totalWidth)
       data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "area-zindex", z)
       data[offset+1] = getStyle(defaults, stylesheet, fkeys[x], "area-label-stroke-width", z) //area-label-stroke-width
-      data[offset+2] = 0 //reserved
-      data[offset+3] = 255 //reserved
+      var file = getStyle(defaults, stylesheet, fkeys[x], "area-sprite", z)
+      var si = file === undefined ? 0 : sprites[file].index + 1
+      data[offset+2] = Math.floor(si/256)
+      data[offset+3] = si%256
+      if (si !== 0) console.log(si)
     }
     for (var x = 0; x < fkeys.length; x++) {
       var offset = findOffset(x, y+6*(z-zoomStart)+2, totalWidth)
@@ -187,13 +257,6 @@ module.exports = function (opts) {
       data[offset+2] = getStyle(defaults, stylesheet, fkeys[x], "area-label-priority", z) //area-label-priority
       data[offset+3] = 255 || getStyle(defaults, stylesheet, fkeys[x], "area-label-constraints", z) //area-label-constraints
     }
-    for (var x = 0; x < fkeys.length; x++) {
-      var offset = findOffset(x, y+6*(z-zoomStart)+5, totalWidth)
-      data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "area-label-sprite", z) //area-label-sprite
-      data[offset+1] = getSprite() //sprite0
-      data[offset+2] = getSprite() //sprite1
-      data[offset+3] = 255 //reserved
-    }
   }
   var y = heights.point + heights.line + heights.area
   for (var z = zoomStart; z <= zoomEnd; z++) { //areaborder
@@ -216,15 +279,12 @@ module.exports = function (opts) {
     for (var x = 0; x < fkeys.length; x++) {
       var offset = findOffset(x, y+3*(z-zoomStart)+2, totalWidth)
       data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "area-border-zindex", z)
-      data[offset+1] = 0 //sprite0
-      data[offset+2] = 0 //sprite1
+      var file = getStyle(defaults, stylesheet, fkeys[x], "area-border-sprite", z)
+      var si = file === undefined ? 0 : sprites[file].index + 1
+      data[offset+1] = Math.floor(si/256)
+      data[offset+2] = si%256
       data[offset+3] = 255 //reserved
     }
-  }
-  return { 
-    data,
-    width: totalWidth,
-    height: totalHeight
   }
 }
 
@@ -337,16 +397,10 @@ function parseKeys (stylesheet) {
   return stylesheet
 }
 
-function getSpriteFiles (defaults, stylesheet) {
+function getSpriteFiles (stylesheet) {
   var spriteFileNames = new Set()
-  var dkeys = Object.keys(defaults)
   var keys = Object.keys(stylesheet)
-  var re = /(-sprite)+/g
-  for (var h=0; h<dkeys.length; h++) {
-    if (re.test(dkeys[h]))  {
-      spriteFileNames.add(defaults[dkeys[h]])
-    }
-  }
+  var re = /(-sprite)+|(-pattern)+/g
   for (var i=0; i<keys.length; i++) {
     if (stylesheet[keys[i]] !== undefined) {
       k = Object.keys(stylesheet[keys[i]])
@@ -379,7 +433,7 @@ function readSpriteFiles (spriteFileNames, cb) {
         cb = noop
         return f(err)
       }
-      sprites[file] = buf
+      sprites[file] = makePNG.decode(buf)
       if (--pending === 0) cb(null, sprites)
     })
   })
@@ -389,7 +443,5 @@ function readSpriteFiles (spriteFileNames, cb) {
 function findOffset(x, y, imageWidth) {
   return (x + imageWidth * y) * 4
 }
-
-function getSprite () {}
 
 function noop () {}
