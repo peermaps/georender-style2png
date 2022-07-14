@@ -7,6 +7,7 @@ module.exports = function () {
     line: 8*zoomCount,
     area: 5*zoomCount,
     areaborder: 3*zoomCount,
+    spritemeta: 2,
     sprite: 10*zoomCount
   }
   var imageHeight = heights.point + heights.line + heights.area + heights.areaborder + heights.sprite

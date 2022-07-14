@@ -6,14 +6,7 @@ var evalExpr = require('./lib/expr.js')
 var settings = require('./settings.js')()
 var zoomStart = settings.zoomStart
 var zoomEnd = settings.zoomEnd //inclusive
-
-/*
-loop over sprite data and copy each value into an r, g, b, a, etc.
-build inverse of fileOffset. give it a file offset index and receive x and y
-coordinates. as loop over indexes, 0 to data.length, get x and y coordinate and
-step by 4. or 2 loops: y on outside, x on inside
-*/
-
+var roffset = [0,0]
 
 module.exports = function (opts, cb) {
   var defaults = opts.defaults
@@ -30,7 +23,6 @@ function write (sprites, opts) {
   var fkeys = opts.features
   var aSprites = []
   var spriteKeys = Object.keys(sprites)
-  console.log('spriteKeys:', spriteKeys)
   for (var i = 0; i < spriteKeys.length; i++) {
     var key = spriteKeys[i]
     aSprites.push(sprites[key])
@@ -44,7 +36,7 @@ function write (sprites, opts) {
   var data = new Uint8Array(dataLength)
   writeFeatures(data, opts, totalWidth, sprites)
   writeSpriteMeta(data, opts, aSprites)
-  //writeSprite(data, aSprites)
+  writeSprites(data, totalWidth, aSprites)
   return { 
     data,
     width: totalWidth,
@@ -54,7 +46,6 @@ function write (sprites, opts) {
 
 function writeSpriteMeta(data, opts, sprites) {
   var spriteKeys = Object.keys(sprites)
-  var smheight = 2 //calculate this properly
   var heights = settings.heights
   var fkeys = opts.features
   var y0 = heights.point + heights.line + heights.area + heights.areaborder
@@ -70,13 +61,37 @@ function writeSpriteMeta(data, opts, sprites) {
     data[offset+2] = h0
     data[offset+3] = s.height%256
     var offset = findOffset(x, y0+y+1)
-    //below offsets should be into sprite block
     var soffset = [s.x, s.y]
     data[offset+0] = Math.floor(soffset[0]) 
     data[offset+1] = soffset[0]%256
     data[offset+2] = Math.floor(soffset[1]/256)
     data[offset+3] = soffset[1]%256
   }
+}
+
+function writeSprites (data, totalWidth, sprites) {
+  var heights = settings.heights
+  var x0 = 0
+  var y0 = heights.point + heights.line + heights.area + heights.areaborder + heights.spritemeta
+  for (var i=0; i<sprites.length; i++) {
+    var s = sprites[i]
+    var sx = s.x+x0
+    var sy = s.y+y0
+    for (var j=0; j<s.data.length; j+=4) {
+      reverseFindOffset(roffset, j/4, s.width)
+      var offset = findOffset(roffset[0]+sx, roffset[1]+sy, totalWidth)
+      data[offset+0] = s.data[j]
+      data[offset+1] = s.data[j+1]
+      data[offset+2] = s.data[j+2]
+      data[offset+3] = s.data[j+3]
+    }
+  }
+}
+
+function reverseFindOffset (out, index, spriteWidth, spriteHeight) {
+  out[0] = index%spriteWidth
+  out[1] = Math.floor(index/spriteWidth)
+  return out
 }
 
 function writeFeatures(data, opts, totalWidth, sprites) {
@@ -138,7 +153,6 @@ function writeFeatures(data, opts, totalWidth, sprites) {
 
       var file = getStyle(defaults, stylesheet, fkeys[x], "point-sprite", z)
       var si = file === undefined ? 0 : sprites[file].index + 1
-      if (si !== 0) console.log(si)
       data[offset+1] = Math.floor(si/256)
       data[offset+2] = si%256
       data[offset+3] = 0
@@ -208,7 +222,6 @@ function writeFeatures(data, opts, totalWidth, sprites) {
       data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "line-label-stroke-width", z)
       var file = getStyle(defaults, stylesheet, fkeys[x], "line-sprite", z)
       var si = file === undefined ? 0 : sprites[file].index + 1
-      if (si !== 0) console.log(si)
       data[offset+1] = Math.floor(si/256)
       data[offset+2] = si%256
       data[offset+3] = 255
@@ -232,7 +245,6 @@ function writeFeatures(data, opts, totalWidth, sprites) {
       var si = file === undefined ? 0 : sprites[file].index + 1
       data[offset+2] = Math.floor(si/256)
       data[offset+3] = si%256
-      if (si !== 0) console.log(si)
     }
     for (var x = 0; x < fkeys.length; x++) {
       var offset = findOffset(x, y+6*(z-zoomStart)+2, totalWidth)
