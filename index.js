@@ -30,7 +30,7 @@ function write (sprites, opts) {
   }
   var packedSprites = binpack(aSprites, { inPlace: true })
   var smHeight = Math.ceil(spriteKeys.length*2/fkeys.length)
-  var totalHeight = settings.imageHeight + smHeight + packedSprites.height
+  var totalHeight = settings.fbTotalHeight + smHeight + packedSprites.height
   var totalWidth = Math.max(settings.imageWidth, packedSprites.width)
   var dataLength = 4*totalWidth*totalHeight
   var data = new Uint8Array(dataLength)
@@ -46,7 +46,7 @@ function write (sprites, opts) {
 
 function writeSpriteMeta(data, opts, sprites) {
   var spriteKeys = Object.keys(sprites)
-  var heights = settings.heights
+  var heights = settings.fbHeights
   var fkeys = opts.features
   var y0 = heights.point + heights.line + heights.area + heights.areaborder
   for (var i=0; i<sprites.length; i++) {
@@ -70,9 +70,8 @@ function writeSpriteMeta(data, opts, sprites) {
 }
 
 function writeSprites (data, totalWidth, sprites) {
-  var heights = settings.heights
   var x0 = 0
-  var y0 = heights.point + heights.line + heights.area + heights.areaborder + heights.spritemeta
+  var y0 = settings.fbTotalHeight
   for (var i=0; i<sprites.length; i++) {
     var s = sprites[i]
     var sx = s.x+x0
@@ -98,7 +97,7 @@ function writeFeatures(data, opts, totalWidth, sprites) {
   var defaults = opts.defaults
   var stylesheet = opts.stylesheet
   var fkeys = opts.features
-  var heights = settings.heights
+  var heights = settings.fbHeights
   parseZooms(stylesheet)
   for (var z = zoomStart; z <= zoomEnd; z++) { //point
     for (var x = 0; x < fkeys.length; x++) {
