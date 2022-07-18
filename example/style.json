@@ -35,6 +35,7 @@
     "point-fill-color": "#9a85c6",
     "line-fill-color": "#9a85c6",
     "area-fill-color": "#9a85c6",
+    "area-label-sprite": "sprites/ssat.png",
     "area-zindex": 5
   },
   "amenity.clinic": {
@@ -42,7 +43,7 @@
     "point-fill-color": "#ecb9af",
     "line-fill-color": "#ecb9af",
     "area-fill-color": "#ecb9af",
-    "area-sprite": "sprites/redcross.png"
+    "area-label-sprite": "sprites/redcross.png"
   },
   "amenity.college": {
     "point-fill-color": "#b59260",
@@ -335,7 +336,8 @@
     "point-size": 5,
     "point-fill-color": "#a1f1a1",
     "area-fill-color": "#badbad",
-    "area-zindex": 4.0
+    "area-zindex": 4.0,
+    "area-label-sprite": "sprites/picnic.png"
   },
   "leisure.pitch": {
     "area-fill-color": "#7fc2ac",

@@ -5,7 +5,7 @@ module.exports = function () {
   var fbHeights = {
     point: 7*zoomCount,
     line: 8*zoomCount,
-    area: 5*zoomCount,
+    area: 6*zoomCount,
     areaborder: 3*zoomCount,
     spritemeta: 2
   }
