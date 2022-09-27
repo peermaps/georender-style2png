@@ -30,7 +30,7 @@ function write (sprites, opts) {
     sprites[key].name = key
   }
   var packedSprites = binpack(aSprites, { inPlace: true })
-  var smHeight = Math.ceil(spriteKeys.length*2/fkeys.length)
+  var smHeight = Math.ceil(spriteKeys.length*2/fkeys.length) + 1
   var totalHeight = settings.fbTotalHeight + smHeight + packedSprites.height
   var totalWidth = Math.max(settings.imageWidth, packedSprites.width)
   var dataLength = 4*totalWidth*totalHeight
@@ -64,7 +64,6 @@ function writeSpriteMeta(data, opts, sprites) {
     data[offset+1] = px0g
     data[offset+2] = px0b
     data[offset+3] = px0a
-    console.log(i, px0b, px0a, s.height, s.name)
     var offset = findOffset(x, y0+y+1, settings.imageWidth)
     var px1r = Math.floor(s.x/256)
     var px1g = s.x%256
