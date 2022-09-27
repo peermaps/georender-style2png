@@ -9,7 +9,7 @@ module.exports = function () {
     areaborder: 3*zoomCount,
     spritemeta: 2
   }
-  var fbTotalHeight = fbHeights.point + fbHeights.line + fbHeights.area + fbHeights.areaborder
+  var fbTotalHeight = fbHeights.point + fbHeights.line + fbHeights.area + fbHeights.areaborder + fbHeights.spritemeta
   var imageWidth = 1240
 
   return { 

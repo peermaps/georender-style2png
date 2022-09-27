@@ -22,11 +22,12 @@ module.exports = function (opts, cb) {
 function write (sprites, opts) {
   var fkeys = opts.features
   var aSprites = []
-  var spriteKeys = Object.keys(sprites)
+  var spriteKeys = Object.keys(sprites).sort()
   for (var i = 0; i < spriteKeys.length; i++) {
     var key = spriteKeys[i]
     aSprites.push(sprites[key])
     sprites[key].index = i
+    sprites[key].name = key
   }
   var packedSprites = binpack(aSprites, { inPlace: true })
   var smHeight = Math.ceil(spriteKeys.length*2/fkeys.length)
@@ -45,7 +46,6 @@ function write (sprites, opts) {
 }
 
 function writeSpriteMeta(data, opts, sprites) {
-  var spriteKeys = Object.keys(sprites)
   var heights = settings.fbHeights
   var fkeys = opts.features
   var y0 = heights.point + heights.line + heights.area + heights.areaborder
@@ -54,18 +54,26 @@ function writeSpriteMeta(data, opts, sprites) {
     var y = Math.floor(i/fkeys.length)*2
     var x = i%fkeys.length
     var isVector = false
-    var offset = findOffset(x, y0+y+0)
-    data[offset+0] = Math.floor(s.width/256)
-    data[offset+1] = s.width%256
+    var offset = findOffset(x, y0+y+0, settings.imageWidth)
     var h0 = Math.floor(s.height/256) + (isVector ? 127 : 0)
-    data[offset+2] = h0
-    data[offset+3] = s.height%256
-    var offset = findOffset(x, y0+y+1)
-    var soffset = [s.x, s.y]
-    data[offset+0] = Math.floor(soffset[0]) 
-    data[offset+1] = soffset[0]%256
-    data[offset+2] = Math.floor(soffset[1]/256)
-    data[offset+3] = soffset[1]%256
+    var px0r = Math.floor(s.width/256)
+    var px0g = s.width%256
+    var px0b = h0
+    var px0a = s.height%256
+    data[offset+0] = px0r
+    data[offset+1] = px0g
+    data[offset+2] = px0b
+    data[offset+3] = px0a
+    console.log(i, px0b, px0a, s.height, s.name)
+    var offset = findOffset(x, y0+y+1, settings.imageWidth)
+    var px1r = Math.floor(s.x/256)
+    var px1g = s.x%256
+    var px1b = Math.floor(s.y/256)
+    var px1a = s.y%256
+    data[offset+0] = px1r 
+    data[offset+1] = px1g
+    data[offset+2] = px1b
+    data[offset+3] = px1a
   }
 }
 
