@@ -30,8 +30,7 @@ function write (sprites, settings, opts) {
     sprites[key].name = key
   }
   var packedSprites = binpack(aSprites, { inPlace: true })
-  var smHeight = Math.ceil(spriteKeys.length*2/fkeys.length) + 1
-  var totalHeight = settings.fbTotalHeight + smHeight + packedSprites.height
+  var totalHeight = settings.fbTotalHeight + packedSprites.height
   var totalWidth = Math.max(settings.imageWidth, packedSprites.width)
   var dataLength = 4*totalWidth*totalHeight
   var data = new Uint8Array(dataLength)

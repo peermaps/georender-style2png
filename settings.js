@@ -8,7 +8,7 @@ module.exports = function (spriteCount) {
     line: 8*zoomCount,
     area: 6*zoomCount,
     areaborder: 3*zoomCount,
-    spritemeta: 2*Math.ceil(spriteCount/featureCount)+1
+    spritemeta: 2*Math.ceil(spriteCount/featureCount)
   }
   var fbTotalHeight = fbHeights.point + fbHeights.line + fbHeights.area + fbHeights.areaborder + fbHeights.spritemeta
   var imageWidth = 1240
