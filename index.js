@@ -3,9 +3,7 @@ var makePNG = require('fast-png')
 var binpack = require('bin-pack')
 var expand = require('brace-expansion')
 var evalExpr = require('./lib/expr.js')
-var settings = require('./settings.js')()
-var zoomStart = settings.zoomStart
-var zoomEnd = settings.zoomEnd //inclusive
+var Settings = require('./settings.js')
 var roffset = [0,0]
 
 module.exports = function (opts, cb) {
@@ -13,13 +11,15 @@ module.exports = function (opts, cb) {
   var stylesheet = opts.stylesheet
   parseKeys(stylesheet)
   var spriteFiles = getSpriteFiles(stylesheet)
+  var spriteCount = spriteFiles.size
+  var settings = Settings(spriteCount)
   readSpriteFiles(spriteFiles, function (err, sprites) {
     if (err) cb(err)
-    else cb(null, write(sprites, opts))
+    else cb(null, write(sprites, settings, opts))
   })
 }
 
-function write (sprites, opts) {
+function write (sprites, settings, opts) {
   var fkeys = opts.features
   var aSprites = []
   var spriteKeys = Object.keys(sprites).sort()
@@ -35,9 +35,9 @@ function write (sprites, opts) {
   var totalWidth = Math.max(settings.imageWidth, packedSprites.width)
   var dataLength = 4*totalWidth*totalHeight
   var data = new Uint8Array(dataLength)
-  writeFeatures(data, opts, totalWidth, sprites)
-  writeSpriteMeta(data, opts, aSprites)
-  writeSprites(data, totalWidth, aSprites)
+  writeFeatures(data, opts, totalWidth, sprites, settings)
+  writeSpriteMeta(data, opts, aSprites, settings)
+  writeSprites(data, totalWidth, aSprites, settings)
   return { 
     data,
     width: totalWidth,
@@ -45,7 +45,7 @@ function write (sprites, opts) {
   }
 }
 
-function writeSpriteMeta(data, opts, sprites) {
+function writeSpriteMeta(data, opts, sprites, settings) {
   var heights = settings.fbHeights
   var fkeys = opts.features
   var y0 = heights.point + heights.line + heights.area + heights.areaborder
@@ -76,7 +76,7 @@ function writeSpriteMeta(data, opts, sprites) {
   }
 }
 
-function writeSprites (data, totalWidth, sprites) {
+function writeSprites (data, totalWidth, sprites, settings) {
   var x0 = 0
   var y0 = settings.fbTotalHeight
   for (var i=0; i<sprites.length; i++) {
@@ -100,12 +100,14 @@ function reverseFindOffset (out, index, spriteWidth, spriteHeight) {
   return out
 }
 
-function writeFeatures(data, opts, totalWidth, sprites) {
+function writeFeatures(data, opts, totalWidth, sprites, settings) {
   var defaults = opts.defaults
   var stylesheet = opts.stylesheet
   var fkeys = opts.features
   var heights = settings.fbHeights
-  parseZooms(stylesheet)
+  var zoomStart = settings.zoomStart
+  var zoomEnd = settings.zoomEnd //inclusive
+  parseZooms(stylesheet, settings)
   for (var z = zoomStart; z <= zoomEnd; z++) { //point
     for (var x = 0; x < fkeys.length; x++) {
       var offset = findOffset(x, 7*(z-zoomStart)+0, totalWidth)
@@ -385,7 +387,7 @@ function getProp (rules, property, zoom) {
   }
 }
 
-function parseZooms (stylesheet) {
+function parseZooms (stylesheet, settings) {
   var vars = { zoom: 0 }
   var keys = Object.keys(stylesheet)
   for (var i=0; i<keys.length; i++) {
@@ -393,7 +395,7 @@ function parseZooms (stylesheet) {
     for (var j=0; j<pkeys.length; j++) {
       var m = /([\w-]+)(?:\s*\[([^\]]*)\]\s*)/.exec(pkeys[j])
       if (!m) continue
-      for (var zoom=zoomStart; zoom<=zoomEnd; zoom++) {
+      for (var zoom=settings.zoomStart; zoom<=settings.zoomEnd; zoom++) {
         vars.zoom = zoom
         if (!evalExpr(m[2], vars)) continue
         var zkey = m[1] + "[zoom=" + zoom + "]"
