@@ -159,7 +159,7 @@ function writeFeatures(data, opts, totalWidth, sprites, settings) {
       data[offset+0] = getStyle(defaults, stylesheet, fkeys[x], "point-label-stroke-width", z)
 
       var file = getStyle(defaults, stylesheet, fkeys[x], "point-sprite", z)
-      var si = file === undefined ? 0 : sprites[file].index
+      var si = file === undefined ? 0 : sprites[file].index + 1
       data[offset+1] = Math.floor(si/256)
       data[offset+2] = si%256
       data[offset+3] = 0
